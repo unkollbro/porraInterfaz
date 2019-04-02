@@ -83,7 +83,7 @@
                                   <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Component id="btn_apuesta" alignment="1" max="32767" attributes="0"/>
-                                      <Component id="jTextField1" max="32767" attributes="0"/>
+                                      <Component id="textField_nombre" max="32767" attributes="0"/>
                                       <Group type="102" alignment="0" attributes="0">
                                           <Group type="103" groupAlignment="1" max="-2" attributes="0">
                                               <Component id="score_1" max="32767" attributes="0"/>
@@ -92,7 +92,7 @@
                                           <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
                                           <Component id="label_separador" min="-2" max="-2" attributes="0"/>
                                           <EmptySpace pref="30" max="32767" attributes="0"/>
-                                          <Component id="score2" min="-2" pref="65" max="-2" attributes="0"/>
+                                          <Component id="score_2" min="-2" pref="65" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
                               </Group>
@@ -141,14 +141,14 @@
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="label_nombreApostante" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jTextField1" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="textField_nombre" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="label_apuesta" min="-2" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="score_1" alignment="3" min="-2" pref="28" max="-2" attributes="0"/>
-                          <Component id="score2" alignment="3" min="-2" pref="28" max="-2" attributes="0"/>
+                          <Component id="score_2" alignment="3" min="-2" pref="28" max="-2" attributes="0"/>
                           <Component id="label_separador" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
@@ -215,11 +215,11 @@
             <Property name="text" type="java.lang.String" value="Apuesta:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="jTextField1">
+        <Component class="javax.swing.JTextField" name="textField_nombre">
         </Component>
         <Component class="javax.swing.JTextField" name="score_1">
         </Component>
-        <Component class="javax.swing.JTextField" name="score2">
+        <Component class="javax.swing.JTextField" name="score_2">
         </Component>
         <Component class="javax.swing.JLabel" name="label_separador">
           <Properties>
@@ -340,6 +340,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Comprobar Apuestas"/>
           </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jToggleButton1MouseClicked"/>
+          </Events>
         </Component>
         <Container class="javax.swing.JScrollPane" name="jScrollPane1">
           <AuxValues>

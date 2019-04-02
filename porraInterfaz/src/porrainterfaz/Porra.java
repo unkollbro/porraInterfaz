@@ -6,6 +6,10 @@
 package porrainterfaz;
 
 import java.util.ArrayList;
+import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -20,6 +24,8 @@ public class Porra extends javax.swing.JFrame {
         initComponents();
         texto_equipo1.setText("");
         texto_equipo2.setText("");
+        vApuestas = new ArrayList<Apuesta>();
+        sacarAleatorio();
     }
 
     /**
@@ -43,9 +49,9 @@ public class Porra extends javax.swing.JFrame {
         jSeparator3 = new javax.swing.JSeparator();
         label_nombreApostante = new javax.swing.JLabel();
         label_apuesta = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        textField_nombre = new javax.swing.JTextField();
         score_1 = new javax.swing.JTextField();
-        score2 = new javax.swing.JTextField();
+        score_2 = new javax.swing.JTextField();
         label_separador = new javax.swing.JLabel();
         checkbox_pagado = new javax.swing.JCheckBox();
         btn_apuesta = new javax.swing.JButton();
@@ -138,7 +144,7 @@ public class Porra extends javax.swing.JFrame {
                                 .addGap(25, 25, 25)
                                 .addGroup(panel_principalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(btn_apuesta, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jTextField1)
+                                    .addComponent(textField_nombre)
                                     .addGroup(panel_principalLayout.createSequentialGroup()
                                         .addGroup(panel_principalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                             .addComponent(score_1)
@@ -146,7 +152,7 @@ public class Porra extends javax.swing.JFrame {
                                         .addGap(27, 27, 27)
                                         .addComponent(label_separador)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
-                                        .addComponent(score2, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                                        .addComponent(score_2, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panel_principalLayout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(panel_principalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -182,13 +188,13 @@ public class Porra extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(panel_principalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(label_nombreApostante)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(textField_nombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(28, 28, 28)
                 .addGroup(panel_principalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(label_apuesta)
                     .addGroup(panel_principalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(score_1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(score2, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(score_2, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(label_separador)))
                 .addGap(18, 18, 18)
                 .addComponent(checkbox_pagado)
@@ -206,6 +212,11 @@ public class Porra extends javax.swing.JFrame {
         resultado_equipo2.setText("3");
 
         jToggleButton1.setText("Comprobar Apuestas");
+        jToggleButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jToggleButton1MouseClicked(evt);
+            }
+        });
 
         textArea_resultados.setColumns(20);
         textArea_resultados.setRows(5);
@@ -320,9 +331,51 @@ public class Porra extends javax.swing.JFrame {
 
     private void btn_apuestaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_apuestaMouseClicked
         //AÑADIR APUESTA
+        //score_2.getText();
         
+        Pattern puntuacion = Pattern.compile("[0-9][0-9]?");
+        Matcher equipo1 = puntuacion.matcher(String.valueOf(score_1.getText()));
+        Matcher equipo2 = puntuacion.matcher(String.valueOf(score_2.getText()));
+        if(!equipo1.matches() || !equipo2.matches()){
+            score_1.setText("");
+            score_2.setText("");
+            JOptionPane.showMessageDialog(rootPane, "Puntuación introducida erroneamente");
+        }else{
+            vApuestas.add(new Apuesta(Integer.valueOf(score_1.getText()), Integer.valueOf(score_2.getText()), textField_nombre.getText(), checkbox_pagado.isSelected()));
+        }
+        textArea_resultados.setText(recorrerArray());
     }//GEN-LAST:event_btn_apuestaMouseClicked
+
+    private void jToggleButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jToggleButton1MouseClicked
+        comprobarApuesta();
+    }//GEN-LAST:event_jToggleButton1MouseClicked
     
+    private void comprobarApuesta(){
+        int equipo1 = Integer.valueOf(resultado_equipo1.getText());
+        int equipo2 = Integer.valueOf(resultado_equipo2.getText());
+        String ganadores="";
+        for (Apuesta apuesta : vApuestas) {
+            if(apuesta.getLocal()==equipo1 && apuesta.getVisitante()==equipo2){
+                ganadores += apuesta.toString();
+            }
+        }
+        
+        textArea_resultados.setText(ganadores);
+    }
+    
+    private String recorrerArray(){
+        String texto="";
+        for (Apuesta apuesta : vApuestas) {
+            texto += apuesta.toString();
+        }
+        return texto;
+    }
+    
+    private void sacarAleatorio(){
+        Random r = new Random();
+        resultado_equipo1.setText(String.valueOf(r.nextInt(9)));
+        resultado_equipo2.setText(String.valueOf(r.nextInt(9)));
+    }
     /**
      * @param args the command line arguments
      */
@@ -367,7 +420,6 @@ public class Porra extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JSeparator jSeparator4;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JToggleButton jToggleButton1;
     private javax.swing.JLabel label_apuesta;
     private javax.swing.JLabel label_equipos;
@@ -381,10 +433,11 @@ public class Porra extends javax.swing.JFrame {
     private javax.swing.JPanel panel_principal;
     private javax.swing.JLabel resultado_equipo1;
     private javax.swing.JLabel resultado_equipo2;
-    private javax.swing.JTextField score2;
     private javax.swing.JTextField score_1;
+    private javax.swing.JTextField score_2;
     private javax.swing.JTextArea textArea_resultados;
     private javax.swing.JTextField textField_local;
+    private javax.swing.JTextField textField_nombre;
     private javax.swing.JTextField textField_visitante;
     private javax.swing.JLabel texto_equipo1;
     private javax.swing.JLabel texto_equipo2;
